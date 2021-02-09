@@ -107,6 +107,7 @@ module axi_riscv_amos #(
 
     output logic [AXI_ADDR_WIDTH-1:0]   mst_ar_addr_o,
     output logic [2:0]                  mst_ar_prot_o,
+    output logic [5:0]                  mst_ar_atop_o,
     output logic [3:0]                  mst_ar_region_o,
     output logic [7:0]                  mst_ar_len_o,
     output logic [2:0]                  mst_ar_size_o,
@@ -373,6 +374,7 @@ module axi_riscv_amos #(
                     qos_d     = slv_aw_qos_i;
                     region_d  = slv_aw_region_i;
                     aw_user_d = slv_aw_user_i;
+                    atop_d    = slv_aw_atop_i;
                     // If valid AMO --> wait for result
                     if (atop_valid_d != INVALID) begin
                         aw_state_d = WAIT_RESULT_AW;
@@ -399,6 +401,7 @@ module axi_riscv_amos #(
                     mst_aw_qos_o    = qos_q;
                     mst_aw_region_o = region_q;
                     mst_aw_user_o   = aw_user_q;
+                    mst_aw_atop_o   = atop_q;
                     // Check if request is acknowledged
                     if (mst_aw_ready_i) begin
                         aw_state_d = FEEDTHROUGH_AW;
@@ -709,6 +712,7 @@ module axi_riscv_amos #(
         mst_ar_qos_o    = slv_ar_qos_i;
         mst_ar_region_o = slv_ar_region_i;
         mst_ar_user_o   = slv_ar_user_i;
+        mst_ar_atop_o   = 6'b0;
         mst_ar_valid_o  = 1'b0;
         slv_ar_ready_o  = 1'b0;
         // State Machine
@@ -739,6 +743,7 @@ module axi_riscv_amos #(
                             mst_ar_qos_o    = slv_aw_qos_i;
                             mst_ar_region_o = slv_aw_region_i;
                             mst_ar_user_o   = slv_aw_user_i;
+                            mst_ar_atop_o   = slv_aw_atop_i;
                             if (!mst_ar_ready_i) begin
                                 // Hold read request but do not depend on AW
                                 ar_state_d = SEND_AR;
@@ -767,6 +772,7 @@ module axi_riscv_amos #(
                     mst_ar_qos_o    = qos_q;
                     mst_ar_region_o = region_q;
                     mst_ar_user_o   = aw_user_q;
+                    mst_ar_atop_o   = atop_q;
                     if (mst_ar_ready_i) begin
                         // Request acknowledged
                         ar_state_d = FEEDTHROUGH_AR;

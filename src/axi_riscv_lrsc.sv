@@ -63,6 +63,7 @@ module axi_riscv_lrsc #(
     input  logic [AXI_ADDR_WIDTH-1:0]   slv_ar_addr_i,
     input  logic [2:0]                  slv_ar_prot_i,
     input  logic [3:0]                  slv_ar_region_i,
+    input  logic [5:0]                  slv_ar_atop_i,
     input  logic [7:0]                  slv_ar_len_i,
     input  logic [2:0]                  slv_ar_size_i,
     input  logic [1:0]                  slv_ar_burst_i,
@@ -177,7 +178,6 @@ module axi_riscv_lrsc #(
     typedef enum logic [2:0]    {AW_IDLE, W_FORWARD, W_BYPASS, W_WAIT_ART_CLR, W_DROP, B_FORWARD,
                                 B_INJECT} w_state_t;
     w_state_t                       w_state_d,                  w_state_q;
-
     // AR and R Channel
 
     // Time-Invariant Signal Assignments
@@ -187,7 +187,7 @@ module axi_riscv_lrsc #(
     assign mst_ar_len_o       = slv_ar_len_i;
     assign mst_ar_size_o      = slv_ar_size_i;
     assign mst_ar_burst_o     = slv_ar_burst_i;
-    assign mst_ar_lock_o      = 1'b0;
+    assign mst_ar_lock_o      = slv_ar_lock_i | (|slv_ar_atop_i);
     assign mst_ar_cache_o     = slv_ar_cache_i;
     assign mst_ar_qos_o       = slv_ar_qos_i;
     assign mst_ar_id_o        = slv_ar_id_i;
@@ -285,7 +285,7 @@ module axi_riscv_lrsc #(
     assign mst_aw_len_o     = slv_aw_len_i;
     assign mst_aw_size_o    = slv_aw_size_i;
     assign mst_aw_burst_o   = slv_aw_burst_i;
-    assign mst_aw_lock_o    = 1'b0;
+    assign mst_aw_lock_o    = slv_aw_lock_i | (|slv_aw_atop_i);
     assign mst_aw_cache_o   = slv_aw_cache_i;
     assign mst_aw_qos_o     = slv_aw_qos_i;
     assign mst_aw_id_o      = slv_aw_id_i;
