@@ -410,8 +410,7 @@ module axi_riscv_lrsc #(
             B_FORWARD: begin
                 mst_b_ready_o   = slv_b_ready_i;
                 slv_b_valid_o   = mst_b_valid_i;
-                slv_b_resp_o[1] = mst_b_resp_i[1];
-                slv_b_resp_o[0] = (mst_b_resp_i[1] == 1'b0) ? b_excl_q : mst_b_resp_i[0];
+                slv_b_resp_o    = mst_b_resp_i;
                 slv_b_user_o    = mst_b_user_i;
                 slv_b_id_o      = mst_b_id_i;
                 if (slv_b_valid_o && slv_b_ready_i) begin

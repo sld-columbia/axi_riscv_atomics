@@ -374,7 +374,6 @@ module axi_riscv_amos #(
                     qos_d     = slv_aw_qos_i;
                     region_d  = slv_aw_region_i;
                     aw_user_d = slv_aw_user_i;
-                    atop_d    = slv_aw_atop_i;
                     // If valid AMO --> wait for result
                     if (atop_valid_d != INVALID) begin
                         aw_state_d = WAIT_RESULT_AW;
