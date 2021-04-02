@@ -63,6 +63,7 @@ module axi_riscv_lrsc #(
     input  logic [AXI_ADDR_WIDTH-1:0]   slv_ar_addr_i,
     input  logic [2:0]                  slv_ar_prot_i,
     input  logic [3:0]                  slv_ar_region_i,
+    input  logic [5:0]                  slv_ar_atop_i,
     input  logic [7:0]                  slv_ar_len_i,
     input  logic [2:0]                  slv_ar_size_i,
     input  logic [1:0]                  slv_ar_burst_i,
