@@ -190,7 +190,7 @@ module axi_riscv_lrsc #(
     assign mst_ar_len_o       = slv_ar_len_i;
     assign mst_ar_size_o      = slv_ar_size_i;
     assign mst_ar_burst_o     = slv_ar_burst_i;
-    assign mst_ar_lock_o      = slv_ar_lock_i  | (|slv_ar_atop_i);
+    assign mst_ar_lock_o      = slv_ar_lock_i | (|slv_ar_atop_i);
     assign mst_ar_cache_o     = slv_ar_cache_i;
     assign mst_ar_qos_o       = slv_ar_qos_i;
     assign mst_ar_id_o        = slv_ar_id_i;
