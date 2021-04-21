@@ -38,6 +38,8 @@ module axi_riscv_lrsc #(
     parameter int unsigned AXI_DATA_WIDTH = 0,
     parameter int unsigned AXI_ID_WIDTH = 0,
     parameter int unsigned AXI_USER_WIDTH = 0,
+    /// if AXI RISC-V atomic handler is not present, AMOS are executed by the SoC caches
+    parameter logic AXI_RISCV_AMOS_PRESENT = 1'b1,
     /// Derived Parameters (do NOT change manually!)
     localparam int unsigned AXI_STRB_WIDTH = AXI_DATA_WIDTH / 8
 ) (
@@ -190,7 +192,7 @@ module axi_riscv_lrsc #(
     assign mst_ar_len_o       = slv_ar_len_i;
     assign mst_ar_size_o      = slv_ar_size_i;
     assign mst_ar_burst_o     = slv_ar_burst_i;
-    assign mst_ar_lock_o      = slv_ar_lock_i;
+    assign mst_ar_lock_o      = AXI_RISCV_AMOS_PRESENT ? slv_ar_lock_i | (|slv_ar_atop_i) : slv_ar_lock_i;
     assign mst_ar_cache_o     = slv_ar_cache_i;
     assign mst_ar_qos_o       = slv_ar_qos_i;
     assign mst_ar_id_o        = slv_ar_id_i;
@@ -204,7 +206,7 @@ module axi_riscv_lrsc #(
     always_comb begin
         mst_ar_valid_o  = 1'b0;
         slv_ar_ready_o  = 1'b0;
-        mst_r_ready_o   = slv_r_ready_i;
+        mst_r_ready_o   = AXI_RISCV_AMOS_PRESENT ? 1'b0 : slv_r_ready_i;
         slv_r_valid_o   = 1'b0;
         slv_r_resp_o    = '0;
         art_set_addr    = '0;
@@ -214,7 +216,7 @@ module axi_riscv_lrsc #(
         rd_clr_req      = 1'b0;
         r_excl_d        = r_excl_q;
         r_state_d       = r_state_q;
-        on_going_amo_d  = on_going_amo_q || (slv_aw_valid_i && slv_aw_atop_i);
+        on_going_amo_d  = AXI_RISCV_AMOS_PRESENT ? 1'b0 : on_going_amo_q || (slv_aw_valid_i && slv_aw_atop_i);
 
         case (r_state_q)
 
@@ -292,7 +294,7 @@ module axi_riscv_lrsc #(
     assign mst_aw_len_o     = slv_aw_len_i;
     assign mst_aw_size_o    = slv_aw_size_i;
     assign mst_aw_burst_o   = slv_aw_burst_i;
-    assign mst_aw_lock_o    = slv_aw_lock_i;
+    assign mst_aw_lock_o    = AXI_RISCV_AMOS_PRESENT ? slv_aw_lock_i | (|slv_aw_atop_i) : slv_aw_lock_i;
     assign mst_aw_cache_o   = slv_aw_cache_i;
     assign mst_aw_qos_o     = slv_aw_qos_i;
     assign mst_aw_id_o      = slv_aw_id_i;
