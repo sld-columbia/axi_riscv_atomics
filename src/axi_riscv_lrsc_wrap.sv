@@ -61,6 +61,7 @@ module axi_riscv_lrsc_wrap #(
         .slv_ar_addr_i   ( slv.ar_addr   ),
         .slv_ar_prot_i   ( slv.ar_prot   ),
         .slv_ar_region_i ( slv.ar_region ),
+        .slv_ar_atop_i   ( '0            ),
         .slv_ar_len_i    ( slv.ar_len    ),
         .slv_ar_size_i   ( slv.ar_size   ),
         .slv_ar_burst_i  ( slv.ar_burst  ),

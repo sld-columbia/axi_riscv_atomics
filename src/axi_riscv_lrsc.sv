@@ -504,7 +504,7 @@ module axi_riscv_lrsc #(
 // pragma translate_off
 `ifndef VERILATOR
     initial begin: validate_params
-        assert (ADDR_END > ADDR_BEGIN)
+        assert (ADDR_END >= ADDR_BEGIN)
             else $fatal(1, "ADDR_END must be greater than ADDR_BEGIN!");
         assert (AXI_ADDR_WIDTH > 0)
             else $fatal(1, "AXI_ADDR_WIDTH must be greater than 0!");
